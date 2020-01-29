@@ -44,6 +44,7 @@ class SeekAndRequestVideoIndex(mrl: URL, port: Int, uuid: UUID = UUID.randomUUID
       Thread.sleep(3000)
       io.send(VideoCommands.PAUSE)
       io.send(SharkCommands.SHOW)
+      var n = 0
       for {
         i <- 0 to 10
       } {
@@ -51,6 +52,7 @@ class SeekAndRequestVideoIndex(mrl: URL, port: Int, uuid: UUID = UUID.randomUUID
         val last = lastIndexRequest.get()
         val next = last.plusMillis(dt)
         request(next, io)
+        n = n + 1
         Thread.sleep(500)
       }
 
@@ -58,6 +60,9 @@ class SeekAndRequestVideoIndex(mrl: URL, port: Int, uuid: UUID = UUID.randomUUID
       executor.shutdown()
       if (!passed)
         throw new RuntimeException("Seek test failed. A videoindex was not correct")
+
+      if (counter.get() != n)
+        throw new RuntimeException(s"Sent ${n} videoindex requests. Received ${counter.get()} reponses")
     }
     t.toEither
 

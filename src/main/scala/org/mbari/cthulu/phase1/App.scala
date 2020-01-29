@@ -32,9 +32,9 @@ class AppRunner extends Callable[Integer] {
     else new File(mrl).toURI.toURL
 
   private[this] lazy val tests = Seq(
-    new OpenPlayAndClose(movieUrl, port),
-    new SendAllCommands(movieUrl, port),
-    new Framecapture(movieUrl, port),
+//    new OpenPlayAndClose(movieUrl, port),
+//    new SendAllCommands(movieUrl, port),
+//    new Framecapture(movieUrl, port),
     new SeekAndRequestVideoIndex(movieUrl, port)
   )
 
