@@ -6,10 +6,9 @@ import java.net.URL
 import picocli.CommandLine.{Command, Parameters, Option => Opt}
 import java.util.concurrent.Callable
 
-import org.mbari.cthulu.phase1.tests.{Framecapture, OpenPlayAndClose, SendAllCommands}
+import org.mbari.cthulu.phase1.tests.{Framecapture, OpenPlayAndClose, SeekAndRequestVideoIndex, SendAllCommands}
 import picocli.CommandLine
 
-import scala.concurrent.ExecutionContext
 
 /**
   *
@@ -33,9 +32,10 @@ class AppRunner extends Callable[Integer] {
     else new File(mrl).toURI.toURL
 
   private[this] lazy val tests = Seq(
-//    new OpenPlayAndClose(movieUrl, port),
-//    new SendAllCommands(movieUrl, port),
-    new Framecapture(movieUrl, port)
+    new OpenPlayAndClose(movieUrl, port),
+    new SendAllCommands(movieUrl, port),
+    new Framecapture(movieUrl, port),
+    new SeekAndRequestVideoIndex(movieUrl, port)
   )
 
   def call(): Integer = {

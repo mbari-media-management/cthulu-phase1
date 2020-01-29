@@ -20,6 +20,7 @@ class OpenPlayAndClose(mrl: URL, port: Int, uuid: UUID = UUID.randomUUID())
     val t = Try {
       val executor = Executors.newSingleThreadExecutor()
       val io       = new SchedulerVideoIO(new SharktopodaVideoIO(uuid, "localhost", port), executor)
+
       io.send(new OpenCmd(mrl))
       Thread.sleep(3000)
       io.send(SharkCommands.SHOW)

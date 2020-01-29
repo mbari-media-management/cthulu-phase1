@@ -32,6 +32,7 @@ class SendAllCommands(mrl: URL, port: Int, uuid: UUID = UUID.randomUUID())
       def cmds =
         Seq(
           new OpenCmd(mrl),
+          new SeekElapsedTimeCmd(Duration.ofMillis(6000)),
           VideoCommands.PLAY,
           SharkCommands.SHOW,
           SharkCommands.REQUEST_VIDEO_INFO,
@@ -39,7 +40,7 @@ class SendAllCommands(mrl: URL, port: Int, uuid: UUID = UUID.randomUUID())
           VideoCommands.REQUEST_ELAPSED_TIME,
           VideoCommands.REQUEST_INDEX,
           VideoCommands.REQUEST_STATUS,
-          new SeekElapsedTimeCmd(Duration.ofMillis(3000)),
+          new SeekElapsedTimeCmd(Duration.ofMillis(12000)),
           new ShuttleCmd(0.5),
           new ShuttleCmd(-0.5),
           new ShuttleCmd(0.1),
