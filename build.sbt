@@ -42,6 +42,7 @@ lazy val root = (project in file("."))
   .settings(
     name := "cthulu-phase1",
     mainClass in assembly := Some("org.mbari.cthulu.phase1.App"),
+    assemblyJarName := "cthulu-phase1-app.jar",
     libraryDependencies ++= Seq(
       circeConfig,
       logback,
