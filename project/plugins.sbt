@@ -1,0 +1,7 @@
+addSbtPlugin("com.eed3si9n"      % "sbt-assembly"         % "0.14.10")
+addSbtPlugin("com.eed3si9n"      % "sbt-unidoc"           % "0.4.2")
+addSbtPlugin("com.timushev.sbt"  % "sbt-updates"          % "0.4.0")
+addSbtPlugin("com.typesafe.sbt"  % "sbt-git"              % "1.0.0")
+addSbtPlugin("de.heikoseeberger" % "sbt-header"           % "5.4.0")
+addSbtPlugin("net.virtual-void"  % "sbt-dependency-graph" % "0.9.2")
+addSbtPlugin("org.scalameta"     % "sbt-scalafmt"         % "2.3.0")
