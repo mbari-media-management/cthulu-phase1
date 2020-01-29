@@ -6,5 +6,10 @@ __To build__:
 
 `sbt assembly`
 
-__To run__: Launch cthulu, then `java -jar target/scala-2.13/cthulu-phase1-app.jar`
+__To run__: 
+
+```
+# Launch cthulu first!
+java -jar target/scala-2.13/cthulu-phase1-app.jar
+```
 
