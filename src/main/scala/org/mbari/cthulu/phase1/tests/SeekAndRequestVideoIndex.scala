@@ -3,14 +3,12 @@ package org.mbari.cthulu.phase1.tests
 import java.net.URL
 import java.time.Duration
 import java.util.UUID
-import java.util.concurrent.Executors
 import java.util.concurrent.atomic.{AtomicInteger, AtomicReference}
 
 import org.mbari.cthulu.phase1.SIO
 import org.mbari.vcr4j.commands.{SeekElapsedTimeCmd, VideoCommands}
 import org.mbari.vcr4j.{VideoIO, VideoIndex}
-import org.mbari.vcr4j.decorators.SchedulerVideoIO
-import org.mbari.vcr4j.sharktopoda.SharktopodaVideoIO
+
 import org.mbari.vcr4j.sharktopoda.commands.{OpenCmd, SharkCommands}
 
 import scala.jdk.OptionConverters._
@@ -21,7 +19,7 @@ import scala.util.{Random, Try}
  * @since 2020-01-29T14:28:00
  */
 class SeekAndRequestVideoIndex(mrl: URL, port: Int, uuid: UUID = UUID.randomUUID())
-  extends AcceptanceTest[Throwable, Unit] {
+  extends StandardTest[Unit](mrl, port, uuid) {
 
   private[this] val tolerance: Int = Math.round(1 / 30D * 1000).toInt
   private[this] val lastIndexRequest = new AtomicReference[Duration](Duration.ZERO)
@@ -32,41 +30,34 @@ class SeekAndRequestVideoIndex(mrl: URL, port: Int, uuid: UUID = UUID.randomUUID
 
   override def name: String = "Seek and request video index"
 
-  override def apply(): Either[Throwable, Unit] = {
 
-    val t = Try {
-      val executor = Executors.newSingleThreadExecutor()
-      val io = new SchedulerVideoIO(new SharktopodaVideoIO(uuid, "localhost", port), executor)
-      io.getIndexObservable
-        .subscribe(i => handleIndex(i))
+  override def test(io: SIO): Unit = {
+    io.getIndexObservable
+      .subscribe(i => handleIndex(i))
 
-      io.send(new OpenCmd(mrl))
-      Thread.sleep(3000)
-      io.send(VideoCommands.PAUSE)
-      io.send(SharkCommands.SHOW)
-      var n = 0
-      for {
-        i <- 0 to 10
-      } {
-        val dt = Random.between(0, 4000)
-        val last = lastIndexRequest.get()
-        val next = last.plusMillis(dt)
-        request(next, io)
-        n = n + 1
-        Thread.sleep(500)
-      }
-
-      io.close()
-      executor.shutdown()
-      if (!passed)
-        throw new RuntimeException("Seek test failed. A videoindex was not correct")
-
-      if (counter.get() != n)
-        throw new RuntimeException(s"Sent ${n} videoindex requests. Received ${counter.get()} reponses")
+    io.send(new OpenCmd(mrl))
+    Thread.sleep(3000)
+    io.send(VideoCommands.PAUSE)
+    io.send(SharkCommands.SHOW)
+    var n = 0
+    for {
+      i <- 0 to 10
+    } {
+      val dt = Random.between(0, 4000)
+      val last = lastIndexRequest.get()
+      val next = last.plusMillis(dt)
+      request(next, io)
+      n = n + 1
+      Thread.sleep(500)
     }
-    t.toEither
+    if (!passed)
+      throw new RuntimeException("Seek test failed. A videoindex was not correct")
+
+    if (counter.get() != n)
+      throw new RuntimeException(s"Sent ${n} videoindex requests. Received ${counter.get()} reponses")
 
   }
+
 
   private def handleIndex(i: VideoIndex): Unit = {
     counter.incrementAndGet()
