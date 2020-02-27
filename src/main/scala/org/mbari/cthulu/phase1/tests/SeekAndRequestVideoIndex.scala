@@ -25,7 +25,7 @@ class SeekAndRequestVideoIndex(mrl: URL, port: Int, uuid: UUID = UUID.randomUUID
   private[this] val lastIndexRequest = new AtomicReference[Duration](Duration.ZERO)
   private[this] val counter = new AtomicInteger(0)
 
-  @transient
+  @volatile
   private var passed: Boolean = true
 
   override def name: String = "Seek and request video index"
