@@ -49,7 +49,8 @@ lazy val root = (project in file("."))
       picocli,
       scalaTest % Test,
       slf4j,
-      vcr4jSharktopoda
+      vcr4jSharktopoda,
+      vcr4jSharkClient
     )
   )
 // See https://www.scala-sbt.org/1.x/docs/Using-Sonatype.html for instructions on how to publish to Sonatype.
