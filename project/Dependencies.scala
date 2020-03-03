@@ -5,6 +5,7 @@ object Dependencies {
   lazy val config           = "com.typesafe"    % "config"                   % "1.4.0"
   lazy val logback          = "ch.qos.logback"  % "logback-classic"          % "1.2.3"
   lazy val picocli          = "info.picocli"    % "picocli"                  % "4.2.0"
+  lazy val scalactic        = "org.scalactic"   %% "scalactic"               % "3.1.1"
   lazy val scalaTest        = "org.scalatest"   %% "scalatest"               % "3.1.1"
   lazy val slf4j            = "org.slf4j"       % "slf4j-api"                % "1.7.30"
   lazy val vcr4jSharktopoda = "org.mbari.vcr4j" % "vcr4j-sharktopoda"        % "4.3.0.jre11"

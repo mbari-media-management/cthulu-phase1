@@ -6,7 +6,7 @@ import java.net.URL
 import picocli.CommandLine.{Command, Parameters, Option => Opt}
 import java.util.concurrent.Callable
 
-import org.mbari.cthulu.phase1.tests.{Framecapture, OpenPlayAndClose, PlayRates, SeekAndRequestVideoIndex, SendAllCommands}
+import org.mbari.cthulu.phase1.tests.{AddMultipleLocalizations, AddSingleLocalizations, Framecapture, LocalizationTest, OpenPlayAndClose, PlayRates, SeekAndRequestVideoIndex, SendAllCommands}
 import picocli.CommandLine
 
 
@@ -36,7 +36,9 @@ class AppRunner extends Callable[Integer] {
 //    new SendAllCommands(movieUrl, port),
 //    new Framecapture(movieUrl, port),
 //    new SeekAndRequestVideoIndex(movieUrl, port),
-    new PlayRates(movieUrl, port)
+//    new PlayRates(movieUrl, port),
+//    new AddSingleLocalizations(movieUrl, port),
+    new AddMultipleLocalizations(movieUrl, port)
   )
 
   def call(): Integer = {

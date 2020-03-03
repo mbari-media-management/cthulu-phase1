@@ -37,17 +37,26 @@ lazy val optionSettings = Seq(
 
 lazy val settings = consoleSettings ++ dependencySettings ++ optionSettings
 
+
+
 lazy val root = (project in file("."))
   .settings(settings)
   .settings(
     name := "cthulu-phase1",
     mainClass in assembly := Some("org.mbari.cthulu.phase1.App"),
     assemblyJarName := "cthulu-phase1-app.jar",
+    assemblyMergeStrategy in assembly := {
+      case "module-info.class" => MergeStrategy.discard
+      case x =>
+        val oldStrategy = (assemblyMergeStrategy in assembly).value
+        oldStrategy(x)
+    },
     libraryDependencies ++= Seq(
       circeConfig,
       logback,
       picocli,
-      scalaTest % Test,
+      scalactic % "test",
+      scalaTest % "test",
       slf4j,
       vcr4jSharktopoda,
       vcr4jSharkClient
