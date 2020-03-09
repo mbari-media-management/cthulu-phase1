@@ -53,7 +53,8 @@ lazy val root = (project in file("."))
     },
     libraryDependencies ++= Seq(
       circeConfig,
-      logback,
+      jansi % "runtime",
+      logback % "runtime",
       picocli,
       scalactic % "test",
       scalaTest % "test",

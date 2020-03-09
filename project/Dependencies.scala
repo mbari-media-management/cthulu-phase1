@@ -3,6 +3,7 @@ import sbt._
 object Dependencies {
   lazy val circeConfig      = "io.circe"        %% "circe-config"            % "0.7.0"
   lazy val config           = "com.typesafe"    % "config"                   % "1.4.0"
+  lazy val jansi = "org.fusesource.jansi" % "jansi" % "1.18"
   lazy val logback          = "ch.qos.logback"  % "logback-classic"          % "1.2.3"
   lazy val picocli          = "info.picocli"    % "picocli"                  % "4.2.0"
   lazy val scalactic        = "org.scalactic"   %% "scalactic"               % "3.1.1"

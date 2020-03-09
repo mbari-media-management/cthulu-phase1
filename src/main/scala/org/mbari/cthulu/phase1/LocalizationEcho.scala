@@ -18,7 +18,6 @@ object LocalizationEcho {
 
   def main(args: Array[String]): Unit = {
 
-
     val thread = new Thread(() => lio.getController
       .getIncoming
       .ofType(classOf[Message])
