@@ -1,8 +1,9 @@
 package org.mbari.cthulu.phase1.tests
 
 import java.{util => ju}
-import java.util.Random
+import java.util.{Random, UUID}
 import java.time.Duration
+
 import org.mbari.vcr4j.sharktopoda.client.localization.Localization
 
 object LocalizationGenerator {
@@ -56,6 +57,7 @@ object LocalizationGenerator {
     val concept          = concepts(random.nextInt(concepts.size))
     val elapseTime       = Duration.ofMillis(random.nextInt(100000))
     val localizationUuid = ju.UUID.randomUUID()
+    val vrUuid = videoReferenceUuid.getOrElse(UUID.randomUUID())
     val x                = random.nextInt(1920) + 1
     val y                = random.nextInt(1080) + 1
     val width            = random.nextInt(1920 - x + 1) + 1
@@ -66,6 +68,7 @@ object LocalizationGenerator {
       concept,
       elapseTime,
       localizationUuid,
+      vrUuid,
       x,
       y,
       width,

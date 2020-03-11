@@ -6,7 +6,7 @@ import java.net.URL
 import picocli.CommandLine.{Command, Parameters, Option => Opt}
 import java.util.concurrent.Callable
 
-import org.mbari.cthulu.phase1.tests.{AddMultipleLocalizations, AddSingleLocalizations, Framecapture, LocalizationTest, OpenPlayAndClose, PlayRates, SeekAndRequestVideoIndex, SendAllCommands}
+import org.mbari.cthulu.phase1.tests.{AddMultipleLocalizations, AddSingleLocalizations, Framecapture, LocalizationTest, OpenPlayAndClose, PlayRates, SeekAndRequestVideoIndex, SendAllCommands, SetLocalizations}
 import picocli.CommandLine
 
 
@@ -23,7 +23,7 @@ import picocli.CommandLine
 class AppRunner extends Callable[Integer] {
 
   @Opt(names = Array("-p", "--port"), description = Array("The udp control port for sharktopoda"))
-  private var port: Int = 8800
+  private var port: Int = 5005
 
   @Parameters(index = "0", description = Array("The movie url/file"))
   private var mrl: String = _
@@ -37,6 +37,7 @@ class AppRunner extends Callable[Integer] {
 //    new Framecapture(movieUrl, port),
 //    new SeekAndRequestVideoIndex(movieUrl, port),
 //    new PlayRates(movieUrl, port),
+//    new SetLocalizations(movieUrl, port),
 //    new AddSingleLocalizations(movieUrl, port),
     new AddMultipleLocalizations(movieUrl, port)
   )

@@ -23,10 +23,8 @@ class SetLocalizations(mrl: URL, port: Int, uuid: UUID = UUID.randomUUID())
     val localizations = newLocalizations(100)
 
     lio.getController
-      .setLocalizations(localizations.asJava)
-
-
-
+      .addLocalizations(localizations.asJava)
+    
     io.send(VideoCommands.PLAY)
 
   }

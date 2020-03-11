@@ -9,6 +9,6 @@ object Dependencies {
   lazy val scalactic        = "org.scalactic"   %% "scalactic"               % "3.1.1"
   lazy val scalaTest        = "org.scalatest"   %% "scalatest"               % "3.1.1"
   lazy val slf4j            = "org.slf4j"       % "slf4j-api"                % "1.7.30"
-  lazy val vcr4jSharktopoda = "org.mbari.vcr4j" % "vcr4j-sharktopoda"        % "4.3.0.jre11"
-  lazy val vcr4jSharkClient = "org.mbari.vcr4j" % "vcr4j-sharktopoda-client" % "4.3.0.jre11"
+  lazy val vcr4jSharktopoda = "org.mbari.vcr4j" % "vcr4j-sharktopoda"        % "4.3.2.jre11-SNAPSHOT"
+  lazy val vcr4jSharkClient = "org.mbari.vcr4j" % "vcr4j-sharktopoda-client" % "4.3.2.jre11-SNAPSHOT"
 }

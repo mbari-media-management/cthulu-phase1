@@ -25,9 +25,7 @@ class AddMultipleLocalizations(mrl: URL, port: Int, uuid: UUID = UUID.randomUUID
     // Create a sequence of localizations
     val localizations = newLocalizations(100, Duration.ofMillis(2000))
 
-    lio.getController
-      .getOutgoing
-      .onNext(new Message(Message.ACTION_ADD, localizations.asJava))
+    lio.getController.addLocalizations(localizations.asJava)
 
     io.send(VideoCommands.PLAY)
 
