@@ -6,6 +6,8 @@ ThisBuild / organization := "org.mbari"
 ThisBuild / organizationName := "MBARI"
 ThisBuild / licenses += ("Apache-2.0", new URL("https://www.apache.org/licenses/LICENSE-2.0.txt"))
 
+Global / onChangedBuildSource := ReloadOnSourceChanges
+
 lazy val consoleSettings = Seq(
   shellPrompt := { state =>
     val user = System.getProperty("user.name")
@@ -37,8 +39,6 @@ lazy val optionSettings = Seq(
 
 lazy val settings = consoleSettings ++ dependencySettings ++ optionSettings
 
-
-
 lazy val root = (project in file("."))
   .settings(settings)
   .settings(
@@ -46,14 +46,16 @@ lazy val root = (project in file("."))
     mainClass in assembly := Some("org.mbari.cthulu.phase1.App"),
     assemblyJarName := "cthulu-phase1-app.jar",
     assemblyMergeStrategy in assembly := {
-      case "module-info.class" => MergeStrategy.discard
+      case "module-info.class"                   => MergeStrategy.discard
+      case x if x.endsWith("/module-info.class") => MergeStrategy.discard
       case x =>
-        val oldStrategy = (assemblyMergeStrategy in assembly).value
-        oldStrategy(x)
+        MergeStrategy.defaultMergeStrategy(x)
+      // val oldStrategy = (assemblyMergeStrategy in assembly).value
+      // oldStrategy(x)
     },
     libraryDependencies ++= Seq(
       circeConfig,
-      jansi % "runtime",
+      jansi   % "runtime",
       logback % "runtime",
       picocli,
       scalactic % "test",

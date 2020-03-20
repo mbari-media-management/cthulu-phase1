@@ -31,13 +31,19 @@ class LocalizationEcho extends Callable[Integer] {
   @Opt(names = Array("-p", "--port"), description = Array("The udp control port for sharktopoda"))
   private var port: Int = 8800
 
-  @Opt(names = Array("-i", "--incoming"), description = Array("The zeromq control port to subscribe to"))
+  @Opt(
+    names = Array("-i", "--incoming"),
+    description = Array("The zeromq control port to subscribe to")
+  )
   private var incomingPort: Int = 5562
 
   @Opt(names = Array("-s", "--intopic"), description = Array("The zeromq topic to subscribe to"))
   private var incomingTopic: String = "localization"
 
-  @Opt(names = Array("-o", "--outgoing"), description = Array("The zeromq control port to publish to"))
+  @Opt(
+    names = Array("-o", "--outgoing"),
+    description = Array("The zeromq control port to publish to")
+  )
   private var outgoingPort: Int = 5561
 
   @Opt(names = Array("-t", "--outtopic"), description = Array("The zeromq topic to publish to"))
@@ -50,18 +56,20 @@ class LocalizationEcho extends Callable[Integer] {
     else new File(mrl).toURI.toURL
 
   override def call(): Integer = {
-    val lio = new LIO(incomingPort, outgoingPort, incomingTopic, outgoingTopic)
+    val lio  = new LIO(incomingPort, outgoingPort, incomingTopic, outgoingTopic)
     val uuid = UUID.randomUUID()
-    val sio = new SharktopodaVideoIO(uuid, "localhost", port)
+    val sio  = new SharktopodaVideoIO(uuid, "localhost", port)
     sio.send(new OpenCmd(movieUrl))
     val thread = new Thread(() => {
       val ctrl = lio.getController
-      ctrl.getLocalizations
+      ctrl
+        .getLocalizations
         .addListener(new ListChangeListener[Localization] {
           override def onChanged(c: ListChangeListener.Change[_ <: Localization]): Unit = {
             while (c.next()) {
               if (c.wasAdded()) {
-                val added = c.getAddedSubList
+                val added = c
+                  .getAddedSubList
                   .asScala
                   .filter(!_.getConcept.equals("Modified!"))
                   .map(x => {
@@ -71,6 +79,7 @@ class LocalizationEcho extends Callable[Integer] {
                     x.asInstanceOf[Localization]
                   })
                 ctrl.addLocalizations(added.asJava)
+                lio.getSelectionController().select(added.asJava, true)
               }
             }
           }
@@ -83,19 +92,15 @@ class LocalizationEcho extends Callable[Integer] {
   }
 }
 
-
-
 /**
- * @author Brian Schlining
- * @since 2020-03-02T17:05:00
- */
+  * @author Brian Schlining
+  * @since 2020-03-02T17:05:00
+  */
 object LocalizationEcho {
-
-
 
   def main(args: Array[String]): Unit = {
 
-    val exitCode = new CommandLine(new LocalizationEcho).execute(args:_*)
+    val exitCode = new CommandLine(new LocalizationEcho).execute(args: _*)
     System.exit(exitCode)
 
   }
