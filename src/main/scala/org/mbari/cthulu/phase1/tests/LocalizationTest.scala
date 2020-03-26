@@ -8,8 +8,7 @@ import java.net.URL
 import java.time.Duration
 
 import org.mbari.vcr4j.sharktopoda.client.localization.Localization
-
-
+import scala.util.Try
 
 /**
   * @author Brian Schlining
@@ -22,21 +21,27 @@ abstract class LocalizationTest(mrl: URL, port: Int, uuid: UUID = UUID.randomUUI
 
   val lio = new LIO(5562, 5561, "localization", "localization")
 
+  override def apply(): Either[Throwable, Unit] = {
+    val t = super.apply()
+    Try(lio.close())
+    t
+  }
+
   /**
-   * Create n loclizations equally space in time starting at interval and
-   *  ending at n * internval
-   * @param n The number of localizations to generate
-   * @param interval The time interval (elapsedTime) between them
-   * @return The localizaitons with mostly random data in them
-   */
+    * Create n loclizations equally space in time starting at interval and
+    *  ending at n * internval
+    * @param n The number of localizations to generate
+    * @param interval The time interval (elapsedTime) between them
+    * @return The localizaitons with mostly random data in them
+    */
   def newLocalizations(n: Int, interval: Duration = Duration.ofMillis(1000)): Seq[Localization] = {
     val localizations = LocalizationGenerator.newLocalizations(n, Option(uuid))
-    localizations.zipWithIndex
+    localizations
+      .zipWithIndex
       .foreach({
         case (v, i) => v.setElapsedTime(interval.multipliedBy(i))
       })
     localizations
   }
-
 
 }
